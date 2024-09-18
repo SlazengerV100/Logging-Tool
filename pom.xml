@@ -6,6 +6,7 @@
 
     <groupId>nz.ac.wgtn.swen301.assignment2</groupId>
     <artifactId>assignment3-300607402</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -14,4 +15,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
