@@ -3,10 +3,11 @@ package nz.ac.wgtn.swen301.a3.server;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Persistency extends AppenderSkeleton {
-    public static List<Log> DB;
+    public static List<Log> DB = new ArrayList<>();
 
     @Override
     protected void append(LoggingEvent loggingEvent) {
