@@ -3,12 +3,14 @@ package nz.ac.wgtn.swen301.a3.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
 
 import java.io.IOException;
 
+@WebServlet(name = "LogsServlet", urlPatterns = "/logs")
 public class LogsServlet {
     private final Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
 
