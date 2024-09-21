@@ -42,7 +42,7 @@ public class LogsServlet {
         int limitCount = 0;
         JsonArray responseBody = new JsonArray();
 
-        while (limitCount <= limit && i > 0) {
+        while (limitCount < limit && i > 0) {
             Log log = Persistency.DB.get(i);
             if (log.getLoggingEvent().getLevel().isGreaterOrEqual(level)) {
                 responseBody.add(getJsonObject(log));
