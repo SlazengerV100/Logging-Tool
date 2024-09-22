@@ -21,7 +21,7 @@ public class Log {
         return id.toString();
     }
 
-    public String getName() {
+    public String getLogger() {
         return loggingEvent.getLoggerName();
     }
 
@@ -49,6 +49,6 @@ public class Log {
         if (loggingEvent.getThrowableInformation() != null) {
             return Arrays.toString(loggingEvent.getThrowableInformation().getThrowable().getStackTrace());
         }
-        return null;
+        return "";
     }
 }

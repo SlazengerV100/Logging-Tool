@@ -59,10 +59,10 @@ public class LogsServlet {
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("id", log.getId());
-        jsonObject.addProperty("name", log.getName());
         jsonObject.addProperty("level", log.getLevel());
         jsonObject.addProperty("timestamp", log.getTimestamp());
         jsonObject.addProperty("thread", log.getThread());
+        jsonObject.addProperty("logger", log.getLogger());
         jsonObject.addProperty("message", log.getMessage());
         jsonObject.addProperty("errorDetails", log.getErrorDetails());
 
