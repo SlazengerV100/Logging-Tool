@@ -9,6 +9,10 @@ import java.util.List;
 public class Persistency extends AppenderSkeleton {
     public static List<Log> DB = new ArrayList<>();
 
+    public static void reset() {
+        DB = new ArrayList<>();
+    }
+
     @Override
     protected void append(LoggingEvent loggingEvent) {
         DB.add(new Log(loggingEvent));
