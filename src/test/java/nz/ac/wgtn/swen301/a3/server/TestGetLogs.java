@@ -120,4 +120,40 @@ public class TestGetLogs {
         JsonArray jsonArray = createLogs("100", "trace");
         validateLatestLog(jsonArray, 12, "Trace 2", "trace");
     }
+
+    @Test
+    public void testGetLogsStatus400_limit1() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.addParameter("limit", "0");
+        request.addParameter("level", "all");
+
+        logsServlet.doGet(request, response);
+
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void testGetLogsStatus400_limit2() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.addParameter("limit", "2147483648");
+        request.addParameter("level", "all");
+
+        logsServlet.doGet(request, response);
+
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void testGetLogsStatus400_level() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.addParameter("limit", "10");
+        request.addParameter("level", "invalid");
+
+        logsServlet.doGet(request, response);
+
+        assertEquals(400, response.getStatus());
+    }
 }
