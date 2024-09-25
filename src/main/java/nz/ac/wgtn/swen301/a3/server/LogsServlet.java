@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class LogsServlet extends HttpServlet {
@@ -77,7 +78,7 @@ public class LogsServlet extends HttpServlet {
         try {
             UUID id = UUID.fromString(jsonObject.get("id").getAsString());
             String message = jsonObject.get("message").getAsString();
-            LocalDateTime timestamp = LocalDateTime.parse(jsonObject.get("timestamp").getAsString());
+            LocalDateTime timestamp = LocalDateTime.parse(jsonObject.get("timestamp").getAsString(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
             String thread = jsonObject.get("thread").getAsString();
             String logger = jsonObject.get("logger").getAsString();
             Log.Level level = Log.Level.valueOf(jsonObject.get("level").getAsString().toUpperCase());
