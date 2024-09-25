@@ -41,6 +41,7 @@ public class TestPostLogs {
 
         logsServlet.doPost(request, response);
         assertEquals(expectedStatus, response.getStatus());
+        assertEquals("application/json", response.getContentType());
     }
 
     @Test

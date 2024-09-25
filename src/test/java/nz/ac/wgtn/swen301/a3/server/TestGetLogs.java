@@ -93,6 +93,7 @@ public class TestGetLogs {
         logsServlet.doGet(request, response);
 
         assertEquals(expectedStatus, response.getStatus());
+        assertEquals("application/json", response.getContentType());
         return gson.fromJson(response.getContentAsString(), JsonArray.class);
     }
 
