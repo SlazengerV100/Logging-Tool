@@ -7,7 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class LogsServlet extends HttpServlet {
     private final Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
@@ -67,8 +70,32 @@ public class LogsServlet extends HttpServlet {
         return jsonObject;
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        BufferedReader reader = request.getReader();
+        JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
 
+        try {
+            UUID id = UUID.fromString(jsonObject.get("id").getAsString());
+            String message = jsonObject.get("message").getAsString();
+            LocalDateTime timestamp = LocalDateTime.parse(jsonObject.get("timestamp").getAsString());
+            String thread = jsonObject.get("thread").getAsString();
+            String logger = jsonObject.get("logger").getAsString();
+            Log.Level level = Log.Level.valueOf(jsonObject.get("level").getAsString().toUpperCase());
+            String errorDetails = jsonObject.get("errorDetails").getAsString();
+
+            for (Log log : Persistency.DB) {
+                if (log.getId().equals(id.toString())) {
+                    response.setStatus(HttpServletResponse.SC_CONFLICT);
+                    return;
+                }
+            }
+
+            Log newLog = new Log(id, message, timestamp, thread, logger, level, errorDetails);
+            Persistency.DB.add(newLog);
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     public void doDelete(HttpServletRequest request, HttpServletResponse response) {

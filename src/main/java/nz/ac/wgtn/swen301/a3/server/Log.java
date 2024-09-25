@@ -37,7 +37,11 @@ public class Log {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public Log(String message, LocalDateTime timestamp, String thread, String logger, Level level, String errorDetails) {
-        id = UUID.randomUUID();
+        this(UUID.randomUUID(), message, timestamp, thread, logger, level, errorDetails);
+    }
+
+    public Log(UUID id, String message, LocalDateTime timestamp, String thread, String logger, Level level, String errorDetails) {
+        this.id = id;
         this.message = message;
         this.timestamp = timestamp;
         this.thread = thread;
