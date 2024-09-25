@@ -3,15 +3,12 @@ package nz.ac.wgtn.swen301.a3.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.log4j.Level;
 
 import java.io.IOException;
 
-@WebServlet(name = "LogsServlet", urlPatterns = "/logs")
 public class LogsServlet extends HttpServlet {
     private final Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
 
@@ -21,7 +18,7 @@ public class LogsServlet extends HttpServlet {
         String levelString = request.getParameter("level");
 
         int limit;
-        Level level;
+        Log.Level level;
 
         try {
             limit = Integer.parseInt(limitString);
@@ -34,7 +31,7 @@ public class LogsServlet extends HttpServlet {
             return;
         }
 
-        if (levelString == null || (level = Level.toLevel(levelString.toUpperCase(), null)) == null) {
+        if ((level = Log.Level.toLevel(levelString.toUpperCase())) == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -45,7 +42,7 @@ public class LogsServlet extends HttpServlet {
 
         while (limitCount < limit && i >= 0) {
             Log log = Persistency.DB.get(i);
-            if (log.getLoggingEvent().getLevel().isGreaterOrEqual(level)) {
+            if (log.getLevelAsObject().isGreaterOrEqual(level)) {
                 responseBody.add(getJsonObject(log));
                 limitCount++;
             }

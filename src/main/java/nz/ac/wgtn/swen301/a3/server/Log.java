@@ -1,20 +1,49 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-import org.apache.log4j.spi.LoggingEvent;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Log {
-    private final LoggingEvent loggingEvent;
-    private final UUID id;
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    public enum Level {
+        ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF;
 
-    public Log(LoggingEvent loggingEvent) {
-        this.loggingEvent = loggingEvent;
+        public static Level toLevel(String levelString) {
+            return switch (levelString) {
+                case "ALL" -> ALL;
+                case "DEBUG" -> DEBUG;
+                case "INFO" -> INFO;
+                case "WARN" -> WARN;
+                case "ERROR" -> ERROR;
+                case "FATAL" -> FATAL;
+                case "TRACE" -> TRACE;
+                case "OFF" -> OFF;
+                default -> null;
+            };
+        }
+
+        public boolean isGreaterOrEqual(Level other) {
+            return this.ordinal() >= other.ordinal();
+        }
+    }
+
+    private final UUID id;
+    private final String message;
+    private final LocalDateTime timestamp;
+    private final String thread;
+    private final String logger;
+    private final Level level;
+    private final String errorDetails;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+    public Log(String message, LocalDateTime timestamp, String thread, String logger, Level level, String errorDetails) {
         id = UUID.randomUUID();
+        this.message = message;
+        this.timestamp = timestamp;
+        this.thread = thread;
+        this.logger = logger;
+        this.level = level;
+        this.errorDetails = errorDetails;
     }
 
     public String getId() {
@@ -22,33 +51,30 @@ public class Log {
     }
 
     public String getLogger() {
-        return loggingEvent.getLoggerName();
+        return logger;
+    }
+
+    public Level getLevelAsObject() {
+        return level;
     }
 
     public String getLevel() {
-        return loggingEvent.getLevel().toString().toLowerCase();
+        return level.toString().toLowerCase();
     }
 
     public String getTimestamp() {
-        return formatter.format(new Date(loggingEvent.getTimeStamp()));
+        return formatter.format(timestamp);
     }
 
     public String getThread() {
-        return loggingEvent.getThreadName();
+        return thread;
     }
 
     public String getMessage() {
-        return loggingEvent.getRenderedMessage();
-    }
-
-    public LoggingEvent getLoggingEvent() {
-        return loggingEvent;
+        return message;
     }
 
     public String getErrorDetails() {
-        if (loggingEvent.getThrowableInformation() != null) {
-            return Arrays.toString(loggingEvent.getThrowableInformation().getThrowable().getStackTrace());
-        }
-        return "";
+        return errorDetails;
     }
 }
