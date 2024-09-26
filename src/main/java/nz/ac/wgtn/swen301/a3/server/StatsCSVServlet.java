@@ -68,18 +68,12 @@ public class StatsCSVServlet extends HttpServlet {
         out.println("");
 
         for (Map.Entry<String, Map<String, Integer>> entry : table.entrySet()) {
-            String logger = entry.getKey();
+            out.print(entry.getKey());
             Map<String, Integer> levels = entry.getValue();
-            out.printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d%n",
-                    logger,
-                    levels.get("ALL"),
-                    levels.get("TRACE"),
-                    levels.get("DEBUG"),
-                    levels.get("INFO"),
-                    levels.get("WARN"),
-                    levels.get("ERROR"),
-                    levels.get("FATAL"),
-                    levels.get("OFF"));
+            for (Log.Level level : Log.Level.values()) {
+                out.print("\t" + levels.get(level.toString()));
+            }
+            out.println("");
         }
 
         out.flush();
