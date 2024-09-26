@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class StatsCSVServlet extends HttpServlet {
     private final Map<String, Map<String, Integer>> table;
@@ -18,7 +19,7 @@ public class StatsCSVServlet extends HttpServlet {
     }
 
     private Map<String, Map<String, Integer>> initialiseTable() {
-        Map<String, Map<String, Integer>> loggerTable = new HashMap<>();
+        Map<String, Map<String, Integer>> loggerTable = new TreeMap<>();
 
         Map<String, Integer> logger1Levels = new HashMap<>();
         logger1Levels.put("ALL", 0);
@@ -59,13 +60,12 @@ public class StatsCSVServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/tab-separated-values");
-        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.print("Logger");
-        for (String header : table.get("logger1").keySet()) {
-            out.print("\t" + header);
+        for (Log.Level header : Log.Level.values()) {
+            out.print("\t" + header.toString());
         }
-        out.println("");
+        out.print("\n");
 
         for (Map.Entry<String, Map<String, Integer>> entry : table.entrySet()) {
             out.print(entry.getKey());
@@ -73,7 +73,7 @@ public class StatsCSVServlet extends HttpServlet {
             for (Log.Level level : Log.Level.values()) {
                 out.print("\t" + levels.get(level.toString()));
             }
-            out.println("");
+            out.print("\n");
         }
 
         out.flush();
