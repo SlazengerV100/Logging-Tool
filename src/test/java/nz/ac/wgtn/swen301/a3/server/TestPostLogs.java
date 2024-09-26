@@ -1,6 +1,5 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPostLogs {
     private LogsServlet logsServlet;
-    private Gson gson;
 
     @BeforeEach
     public void setUp() {
         logsServlet = new LogsServlet();
         Persistency.reset();
-        gson = new Gson();
     }
 
     private JsonObject createJsonObject(String id, String message, String timestamp, String thread, String logger, String level, String errorDetails) {
