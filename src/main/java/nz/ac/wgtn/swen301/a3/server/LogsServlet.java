@@ -100,6 +100,7 @@ public class LogsServlet extends HttpServlet {
     }
 
     public void doDelete(HttpServletRequest request, HttpServletResponse response) {
-
+        Persistency.reset();
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

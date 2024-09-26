@@ -43,7 +43,7 @@ public class TestGetLogs {
         assertEquals(expectedErrorDetails, latestLog.get("errorDetails"));
     }
 
-    private void createLogs() {
+    public static void createLogs() {
         Persistency.DB.addAll(Arrays.asList(
                 new Log("Warning 1", LocalDateTime.of(2024, 9, 16, 0, 0, 0),
                         "Thread-1", "nz.ac.wgtn.swen301.a3.server.Logger-001",
