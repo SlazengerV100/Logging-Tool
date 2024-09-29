@@ -20,8 +20,10 @@ public class Persistency {
                 }
                 loggerTable.put(log.getLogger(), loggerCount);
             }
-            int count = loggerTable.get(log.getLogger()).get(log.getLevel()) + 1;
-            loggerTable.get(log.getLogger()).put(log.getLevel(), count);
+            String logger = log.getLogger();
+            String level = log.getLevel().toUpperCase();
+            int count = loggerTable.get(logger).get(level) + 1;
+            loggerTable.get(logger).put(level, count);
         }
         return loggerTable;
     }
