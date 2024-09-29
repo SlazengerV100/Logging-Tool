@@ -12,7 +12,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -63,7 +62,7 @@ public class TestStatsHTML {
     }
 
     private Map<String, Map<String, Integer>> parseHtmlTable(Document htmlDocument) {
-        Map<String, Map<String, Integer>> tableMap = new TreeMap<>();
+        Map<String, Map<String, Integer>> tableMap = new HashMap<>();
 
         Elements rows = htmlDocument.getElementsByTag("tr");
         List<String> headers = rows.get(0).getElementsByTag("th").stream()

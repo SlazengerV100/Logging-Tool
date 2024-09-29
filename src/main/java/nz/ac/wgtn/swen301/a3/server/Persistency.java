@@ -1,6 +1,9 @@
 package nz.ac.wgtn.swen301.a3.server;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Persistency {
     public static List<Log> DB = new ArrayList<>();
@@ -10,7 +13,7 @@ public class Persistency {
     }
 
     public static Map<String, Map<String, Integer>> initialiseTable() {
-        Map<String, Map<String, Integer>> loggerTable = new TreeMap<>();
+        Map<String, Map<String, Integer>> loggerTable = new HashMap<>();
 
         for (Log log : DB) {
             if (!loggerTable.containsKey(log.getLogger())) {

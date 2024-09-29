@@ -12,7 +12,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -51,7 +54,7 @@ public class TestStatsXLS {
     }
 
     private Map<String, Map<String, Integer>> parseExcelTable(InputStream excel) throws IOException {
-        Map<String, Map<String, Integer>> tableMap = new TreeMap<>();
+        Map<String, Map<String, Integer>> tableMap = new HashMap<>();
         Workbook workbook = new XSSFWorkbook(excel);
         Sheet sheet = workbook.getSheet("Table");
         Row headerRow = sheet.getRow(0);
