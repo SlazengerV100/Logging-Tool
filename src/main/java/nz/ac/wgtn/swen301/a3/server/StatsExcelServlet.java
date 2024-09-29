@@ -20,6 +20,7 @@ public class StatsExcelServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Table");
         Row headerRow = sheet.createRow(0);
