@@ -22,10 +22,11 @@ public class TestStatsHTML {
     @BeforeEach
     public void setUp() {
         statsHTMLServlet = new StatsHTMLServlet();
+        Persistency.reset();
     }
 
     @Test
-    public void testStatsHTMLStatus200() throws Exception {
+    public void testStatsHTMLStatus200_empty() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -37,7 +38,26 @@ public class TestStatsHTML {
         assertEquals(1, htmlDocument.getElementsByTag("body").size());
         assertEquals(1, htmlDocument.getElementsByTag("table").size());
         assertEquals(1, htmlDocument.getElementsByTag("tbody").size());
-        assertEquals(4, htmlDocument.getElementsByTag("tr").size());
+        assertEquals(1, htmlDocument.getElementsByTag("tr").size());
+        assertEquals(9, htmlDocument.getElementsByTag("th").size());
+        assertEquals(Persistency.initialiseTable(), parseHtmlTable(htmlDocument));
+    }
+
+    @Test
+    public void testStatsHTMLStatus200() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        TestGetLogs.createLogs();
+        statsHTMLServlet.doGet(request, response);
+
+        assertEquals(200, response.getStatus());
+        assertEquals("text/html", response.getContentType());
+        Document htmlDocument = Jsoup.parse(response.getContentAsString());
+        assertEquals(1, htmlDocument.getElementsByTag("body").size());
+        assertEquals(1, htmlDocument.getElementsByTag("table").size());
+        assertEquals(1, htmlDocument.getElementsByTag("tbody").size());
+        assertEquals(13, htmlDocument.getElementsByTag("tr").size());
         assertEquals(9, htmlDocument.getElementsByTag("th").size());
         assertEquals(Persistency.initialiseTable(), parseHtmlTable(htmlDocument));
     }

@@ -15,6 +15,7 @@ public class TestStatsCSV {
     @BeforeEach
     public void setUp() {
         statsCSVServlet = new StatsCSVServlet();
+        Persistency.reset();
     }
 
     @Test
