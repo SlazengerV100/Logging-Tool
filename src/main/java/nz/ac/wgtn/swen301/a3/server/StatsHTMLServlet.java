@@ -19,7 +19,7 @@ public class StatsHTMLServlet extends HttpServlet {
         out.println("<table>");
         out.println("<tbody>");
         out.println("<tr>");
-        out.print("<th>Logger</th>");
+        out.print("<th>logger</th>");
 
         for (Log.Level header : Log.Level.values()) {
             out.printf("\n<th>%s</th>", header);
