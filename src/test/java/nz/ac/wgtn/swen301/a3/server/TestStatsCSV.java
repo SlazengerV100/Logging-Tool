@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestStatsCSV {
@@ -16,7 +18,7 @@ public class TestStatsCSV {
     }
 
     @Test
-    public void testStatsCSVStatus200() throws Exception {
+    public void testStatsCSVStatus200_emptyLogs() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -25,51 +27,42 @@ public class TestStatsCSV {
         assertEquals(200, response.getStatus());
         assertEquals("text/tab-separated-values", response.getContentType());
 
-        String content = response.getContentAsString();
-        String[] rows = content.split("\n");
+        assertEquals(parseCsv(response.getContentAsString()), Persistency.initialiseTable());
+    }
 
-        String[] headerRow = rows[0].split("\t");
-        assertEquals("Logger", headerRow[0]);
-        assertEquals("ALL", headerRow[1]);
-        assertEquals("TRACE", headerRow[2]);
-        assertEquals("DEBUG", headerRow[3]);
-        assertEquals("INFO", headerRow[4]);
-        assertEquals("WARN", headerRow[5]);
-        assertEquals("ERROR", headerRow[6]);
-        assertEquals("FATAL", headerRow[7]);
-        assertEquals("OFF", headerRow[8]);
+    @Test
+    public void testStatsCSVStatus200() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
 
-        String[] logger1Row = rows[1].split("\t");
-        assertEquals("logger1", logger1Row[0]);
-        assertEquals("0", logger1Row[1]);
-        assertEquals("0", logger1Row[2]);
-        assertEquals("3", logger1Row[3]);
-        assertEquals("6", logger1Row[4]);
-        assertEquals("1", logger1Row[5]);
-        assertEquals("1", logger1Row[6]);
-        assertEquals("0", logger1Row[7]);
-        assertEquals("0", logger1Row[8]);
+        TestGetLogs.createLogs();
+        statsCSVServlet.doGet(request, response);
 
-        String[] logger2Row = rows[2].split("\t");
-        assertEquals("logger2", logger2Row[0]);
-        assertEquals("0", logger2Row[1]);
-        assertEquals("12", logger2Row[2]);
-        assertEquals("4", logger2Row[3]);
-        assertEquals("0", logger2Row[4]);
-        assertEquals("0", logger2Row[5]);
-        assertEquals("1", logger2Row[6]);
-        assertEquals("0", logger2Row[7]);
-        assertEquals("0", logger2Row[8]);
+        assertEquals(200, response.getStatus());
+        assertEquals("text/tab-separated-values", response.getContentType());
 
-        String[] logger3Row = rows[3].split("\t");
-        assertEquals("logger3", logger3Row[0]);
-        assertEquals("0", logger3Row[1]);
-        assertEquals("0", logger3Row[2]);
-        assertEquals("0", logger3Row[3]);
-        assertEquals("0", logger3Row[4]);
-        assertEquals("5", logger3Row[5]);
-        assertEquals("1", logger3Row[6]);
-        assertEquals("1", logger3Row[7]);
-        assertEquals("0", logger3Row[8]);
+        assertEquals(parseCsv(response.getContentAsString()), Persistency.initialiseTable());
+    }
+
+    private Map<String, Map<String, Integer>> parseCsv(String csv) {
+        Map<String, Map<String, Integer>> resultMap = new HashMap<>();
+
+        String[] rows = csv.split("\n");
+        String[] headers = rows[0].split("\t");
+        assertEquals("logger", headers[0]);
+        List<String> logLevels = List.of(headers);
+
+        for (int i = 1; i < rows.length; i++) {
+            String[] values = rows[i].split("\t");
+            String logger = values[0];
+            Map<String, Integer> levelsMap = new HashMap<>();
+
+            for (int j = 1; j < values.length; j++) {
+                int count = Integer.parseInt(values[j]);
+                levelsMap.put(logLevels.get(j), count);
+            }
+            resultMap.put(logger, levelsMap);
+        }
+        return resultMap;
     }
 }
