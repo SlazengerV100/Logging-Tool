@@ -13,7 +13,7 @@ public class StatsCSVServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/tab-separated-values");
         PrintWriter out = response.getWriter();
-        out.print("Logger");
+        out.print("logger");
         for (Log.Level header : Log.Level.values()) {
             out.print("\t" + header.toString());
         }
