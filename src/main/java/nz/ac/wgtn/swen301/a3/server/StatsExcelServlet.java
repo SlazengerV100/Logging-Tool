@@ -32,8 +32,8 @@ public class StatsExcelServlet extends HttpServlet {
     }
 
     private void createHeaderRow(Row headerRow) {
-        int colNum = 0;
-        headerRow.createCell(0).setCellValue("Logger");
+        headerRow.createCell(0).setCellValue("logger");
+        int colNum = 1;
         for (Log.Level level : Log.Level.values()) {
             headerRow.createCell(colNum++).setCellValue(level.toString());
         }
