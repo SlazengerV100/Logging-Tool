@@ -70,6 +70,7 @@ public class TestStatsHTML {
                 .map(Element::text)
                 .toList();
 
+        assertEquals("logger", headers.get(0));
         for (int i = 1; i < rows.size(); i++) {
             Element row = rows.get(i);
             Elements cells = row.getElementsByTag("td");
