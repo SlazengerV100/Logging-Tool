@@ -10,12 +10,6 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 public class StatsCSVServlet extends HttpServlet {
-    private final Map<String, Map<String, Integer>> table;
-
-    public StatsCSVServlet() {
-        table = Persistency.initialiseTable();
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/tab-separated-values");
         PrintWriter out = response.getWriter();
@@ -25,7 +19,7 @@ public class StatsCSVServlet extends HttpServlet {
         }
         out.print("\n");
 
-        for (Map.Entry<String, Map<String, Integer>> entry : table.entrySet()) {
+        for (Map.Entry<String, Map<String, Integer>> entry : Persistency.initialiseTable().entrySet()) {
             out.print(entry.getKey());
             Map<String, Integer> levels = entry.getValue();
             for (Log.Level level : Log.Level.values()) {

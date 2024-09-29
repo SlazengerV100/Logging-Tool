@@ -9,12 +9,6 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 public class StatsHTMLServlet extends HttpServlet {
-    private final Map<String, Map<String, Integer>> table;
-
-    public StatsHTMLServlet() {
-        table = Persistency.initialiseTable();
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -33,7 +27,7 @@ public class StatsHTMLServlet extends HttpServlet {
         out.print("\n");
         out.println("</tr>");
 
-        for (Map.Entry<String, Map<String, Integer>> entry : table.entrySet()) {
+        for (Map.Entry<String, Map<String, Integer>> entry : Persistency.initialiseTable().entrySet()) {
             out.println("<tr>");
             out.printf("<td>%s</td>", entry.getKey());
             Map<String, Integer> levels = entry.getValue();

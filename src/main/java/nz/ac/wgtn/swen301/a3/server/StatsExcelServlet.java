@@ -13,12 +13,6 @@ import java.io.OutputStream;
 import java.util.Map;
 
 public class StatsExcelServlet extends HttpServlet {
-    private final Map<String, Map<String, Integer>> table;
-
-    public StatsExcelServlet() {
-        table = Persistency.initialiseTable();
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         Workbook workbook = new XSSFWorkbook();
@@ -27,7 +21,7 @@ public class StatsExcelServlet extends HttpServlet {
         createHeaderRow(headerRow);
 
         int rowNum = 1;
-        for (Map.Entry<String, Map<String, Integer>> entry : table.entrySet()) {
+        for (Map.Entry<String, Map<String, Integer>> entry : Persistency.initialiseTable().entrySet()) {
             createDataRow(sheet.createRow(rowNum++), entry.getKey(), entry.getValue());
         }
 
