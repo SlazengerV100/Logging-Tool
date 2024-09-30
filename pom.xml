@@ -70,7 +70,7 @@
                     <webApp>
                         <contextPath>/logstore</contextPath>
                     </webApp>
-                    <stopPort>8080</stopPort>
+                    <stopPort>8081</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
             </plugin>
