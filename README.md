@@ -1,4 +1,6 @@
-# Assignment 3
+# Stats Servlet
+
+This program has a series of servlets that can create logs via POST requests. The program also has endpoints for GET requests to retrieve these logs in either HTML table, CSV or Excel formats.
 
 # Running
 Run using `mvn jetty:run`
